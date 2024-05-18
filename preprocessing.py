@@ -1,7 +1,14 @@
 import datasets
 import pickle
-from sentence_transformers import SentenceTransformer
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 
+# Download required NLTK resources
+#nltk.download('punkt')
+#nltk.download('stopwords')
+
+# Function to combine all columns in an additional column "combined"
 def merge_columns(dataset):
     combined_text = ' '.join([str(dataset[key]) for key in dataset])
     return {'combined': combined_text}
@@ -16,24 +23,27 @@ def load_pickle(file_path):
     with open(file_path, 'rb') as f:
         return pickle.load(f)
 
-def load_in(combined_dataset_path, embeddings_path):
-    combined_texts = load_pickle(combined_dataset_path)
-    embeddings = load_pickle(embeddings_path)
-    print("Loaded combined dataset and embeddings from pickle files.")
-    return combined_texts, embeddings
+def load_in(pickle_file):
+    in_memory = load_pickle(pickle_file)
+    print("Loaded in pickle file.")
+    return in_memory
 
-def generate_embedding(combined_dataset_path,embeddings_path,anthology_sample,model):
+def tokenize(combined_texts):
+
+    stop_words = set(stopwords.words('english'))
+
+    # Tokenize and remove stop words
+    documents = [
+    [word for word in word_tokenize(doc['combined'].lower()) if word not in stop_words and word.isalpha()]
+    for doc in combined_texts]
+
+    return documents
+
+def preprocess_query(query):
     
-    # Apply the merge_columns function to each example in the dataset
-    combined_texts = anthology_sample.map(merge_columns)
-      
-    # Generate embeddings
-    embeddings = model.encode(combined_texts['combined'])
+    stop_words = set(stopwords.words('english'))
     
-    # Save the combined dataset and embeddings as pickle files
-    save_pickle(combined_texts, combined_dataset_path)
-    save_pickle(embeddings, embeddings_path)
-    print("Generated and saved combined dataset and embeddings to pickle files.")
+    # Tokenize and remove stop words from the query
+    query_tokens = [word for word in word_tokenize(query.lower()) if word not in stop_words and word.isalpha()]
 
-    return combined_texts, embeddings
-
+    return query_tokens

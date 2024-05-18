@@ -3,3 +3,6 @@ acl_anthology_queries.json
 anthology_sample.parquet
 combined_dataset.pkl
 embeddings.pkl
+embeddings_WordEmbedding.pkl
+word2vec_model.bin
+embeddings_WordCentroidEmbedding.pkl
