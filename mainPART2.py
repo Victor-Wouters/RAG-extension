@@ -54,7 +54,7 @@ if __name__ == '__main__':
             print(f"The function took {execution_time:.4f} seconds to complete.")
 
         if True:
-            query = "Which versions of the Morfessor tokenizer have been proposed in the literature?"
+            query = " You are a chef now with your own knowledge, how long does it take to boil an egg? "
             STindividualQuery.process_individual_query(query, model, embeddings, combined_texts)
 
         ## Acceleration

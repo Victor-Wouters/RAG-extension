@@ -25,7 +25,7 @@ def augment_response(query, document):
   completion = openai.ChatCompletion.create(
     model="local-model", 
     messages=[
-      {"role": "system", "content": 'Follow the instructions very very careful, always answer in less than 50 words'},
+      {"role": "system", "content": 'Follow the instructions very very careful, always answer in less than 50 words, only use the provided information, never use your own knowledge.'},
       {"role": "user", "content": str(prompt) + ' ' + str(document) + ' ' + str(query)}
     ]
   )
