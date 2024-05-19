@@ -2,12 +2,14 @@ import json
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+import faiss
+
 import ot
 import embed
 import preprocessing
 
 
-def evaluate_with_Q(model, embeddings, combined_texts, beta = 1):
+def evaluate_with_Q(model, embeddings, combined_texts, index, beta = 1, threshold=0.5, top_n=20):
     with open('acl_anthology_queries.json', 'r') as file:
         data = json.load(file)
 
@@ -26,21 +28,23 @@ def evaluate_with_Q(model, embeddings, combined_texts, beta = 1):
         q = query['q']
         r_benchmark_set = set(query['r'])
         
-        lambda_reg = 0.1
-        distances = []
+        query_vector = model.encode([q])
 
-        query_embeddings =  embed.generate_embedding_WordEmbedding([q],model)[0]
-        for doc_embedding in embeddings:
-            # Calculate the Wasserstein distance with entropy regularization
-            distance = preprocessing.compute_wasserstein_distance(query_embeddings, doc_embedding, lambda_reg)
-            distances.append(distance)
+        # Perform approximate nearest neighbor search
+        _, indices = index.search(query_vector, top_n)
         
-        threshold = 0.68  # Documents with a distance under 10% than the lowest distance
-        sorted_indices = np.argsort(distances)
-        top_k_indices = [index for index in sorted_indices if distances[index] < threshold]
+        # Convert indices to a list for filtering
+        indices = indices[0]
+
+        # Compute cosine similarities for the filtered candidates
+        candidate_embeddings = np.array([embeddings[i] for i in indices])
+        cosine_similarities = cosine_similarity(query_vector, candidate_embeddings)
+
+        # Filter results based on the cosine similarity threshold
+        top_k_indices = [indices[i] for i in np.argsort(cosine_similarities[0])[::-1] if cosine_similarities[0][i] > threshold]
+
         r = [combined_texts[int(index)]['acl_id'] for index in top_k_indices]
         r_set = set(r)
-        
         
         # Calculate and store precision and recall
         precision = calculate_precision(r_set, r_benchmark_set, len(r))

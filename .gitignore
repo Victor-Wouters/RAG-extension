@@ -6,3 +6,5 @@ embeddings.pkl
 embeddings_WordEmbedding.pkl
 word2vec_model.bin
 embeddings_WordCentroidEmbedding.pkl
+embeddings_SentenceTransformer.pkl
+__pycache__

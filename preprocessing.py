@@ -3,6 +3,8 @@ import pickle
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
+import numpy as np
+import ot
 
 # Download required NLTK resources
 #nltk.download('punkt')
@@ -47,3 +49,13 @@ def preprocess_query(query):
     query_tokens = [word for word in word_tokenize(query.lower()) if word not in stop_words and word.isalpha()]
 
     return query_tokens
+
+def compute_wasserstein_distance(query_embedding, doc_embedding, lambda_reg=0.1):
+    M = ot.dist(query_embedding, doc_embedding, metric='euclidean')
+    M /= M.max()
+    w1 = np.ones((len(query_embedding),)) / len(query_embedding)  # Uniform distribution for query
+    w2 = np.ones((len(doc_embedding),)) / len(doc_embedding)  # Uniform distribution for document
+    distance = ot.sinkhorn2(w1, w2, M, lambda_reg)
+    return distance
+
+

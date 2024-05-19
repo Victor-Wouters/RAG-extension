@@ -25,7 +25,7 @@ def process_individual_query(query, model, embeddings, combined_texts):
         distance = ot.sinkhorn2(w1, w2, M, lambda_reg)
         distances.append(distance)
     
-    threshold = 0.6  # Documents with a distance under 10% than the lowest distance
+    threshold = 0.68  # Documents with a distance under 10% than the lowest distance
     sorted_indices = np.argsort(distances)
     top_k_indices = [index for index in sorted_indices if distances[index] < threshold]
     print(top_k_indices)
