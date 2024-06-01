@@ -1,5 +1,4 @@
 import numpy as np
-#import LMSTUDIO
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics.pairwise import cosine_similarity
 import ot

@@ -1,10 +1,9 @@
 import numpy as np
-#import LMSTUDIO
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics.pairwise import cosine_similarity
 import LMSTUDIO
 import LMSTUDIOSummarizer
-from transformers import pipeline
+#from transformers import pipeline
 import spacy
 from collections import Counter
 from heapq import nlargest
@@ -34,7 +33,7 @@ def process_individual_query(query, model, embeddings, combined_texts):
         print("No documents found.")
     
     # Use only the single most relevant query
-    if False:
+    if True:
         for rank, index in enumerate(top_k_indices, start=1):
             index = int(index)
             similarity_score = cosine_similarities[0][index]
@@ -44,11 +43,10 @@ def process_individual_query(query, model, embeddings, combined_texts):
                 print(f"OFFICAL ID: {official_id}\n")
                 
                 
-                
+                # Compression
                 if False:
-                    # Usage in your existing code
                     full_text = str(combined_texts[index]['full_text'])
-                    chunks = split_text_into_chunks(full_text, max_chunk_size=4000)  # Adjust max_chunk_size based on your model's limits
+                    chunks = split_text_into_chunks(full_text, max_chunk_size=2000)  # Adjust max_chunk_size based on your model's limits
                     summaries = [LMSTUDIOSummarizer.summarize_chunk(chunk) for chunk in chunks]
                     combined_summary = ' '.join(summaries)
 
@@ -67,13 +65,13 @@ def process_individual_query(query, model, embeddings, combined_texts):
         print(final_answer)
 
     # Use this to provide the 3 top relevant documents as context for the LM
-    if True:
+    if False:
         context_parts = []
         for rank, index in enumerate(top_k_indices, start=1):
             if rank < 4:
                 doc = combined_texts[int(index)]
-                summary = spacy_summarize(str(combined_texts[int(index)]['full_text']), n_sentences=5)
-                context_part = f" acl_id: {doc['acl_id']} title: {doc['title']} author: {doc['author']} year: {doc['year']} abstract: {doc['abstract']} Summary: {summary} "
+                #summary = spacy_summarize(str(combined_texts[int(index)]['full_text']), n_sentences=5)
+                context_part = f" acl_id: {doc['acl_id']} title: {doc['title']} author: {doc['author']} year: {doc['year']} abstract: {doc['abstract']}" #Summary: {summary} "
                 context_parts.append(context_part)
 
         # Join all parts into a single string

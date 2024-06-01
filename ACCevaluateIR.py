@@ -9,7 +9,7 @@ import embed
 import preprocessing
 
 
-def evaluate_with_Q(model, embeddings, combined_texts, index, beta = 1, threshold=0.5, top_n=20):
+def evaluate_with_Q(model, embeddings, combined_texts, index, beta = 1, threshold=0.5, top_n=115):
     with open('acl_anthology_queries.json', 'r') as file:
         data = json.load(file)
 

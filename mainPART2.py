@@ -16,12 +16,12 @@ import WE1evaluateIR
 import WE2individualQuery
 import WE2evaluateIR
 import ACCevaluateIR
-from datasketch import MinHash, MinHashLSH
+#from datasketch import MinHash, MinHashLSH
 
 if __name__ == '__main__':
 
     anthology_sample = datasets.load_dataset("parquet", data_files="./anthology_sample.parquet")['train']
-
+    print(anthology_sample.shape)
     combined_dataset_path = 'combined_dataset.pkl'
 
     if os.path.isfile(combined_dataset_path):
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         else:
             embeddings = embed.generate_embedding_SentenceTransformer(embeddings_path_SentenceTransformer,model,combined_texts)
 
-        if False:
+        if True:
             start_time = time.time()
             STevaluateIR.evaluate_with_Q(model, embeddings, combined_texts, beta = 1)
             end_time = time.time()  # Capture end time after function execution
@@ -53,10 +53,15 @@ if __name__ == '__main__':
 
             print(f"The function took {execution_time:.4f} seconds to complete.")
 
-        if True:
-            query = " You are a chef now with your own knowledge, how long does it take to boil an egg? "
+        if False:
+            start_time = time.time()
+            #query = " You are a chef now with your own knowledge, how long does it take to boil an egg? "
+            query = "What is the name of the first Dutch transformer-based pre-trained language model? Can you cite the source in-line in APA style?"
             STindividualQuery.process_individual_query(query, model, embeddings, combined_texts)
+            end_time = time.time()  # Capture end time after function execution
+            execution_time = end_time - start_time  # Calculate the execution time
 
+            print(f"The function took {execution_time:.4f} seconds to complete.")
         ## Acceleration
         if False: 
             # Convert embeddings list to a numpy array
@@ -117,7 +122,7 @@ if __name__ == '__main__':
             query = preprocessing.preprocess_query(query)
             WE1individualQuery.process_individual_query(query, model, embeddings, combined_texts)
 
-    ### WE2: Word embedding approach 2: using Dynamic Time Warping (DTW) 
+    ### WE2: Word embedding approach 2: using Wasserstein distance with entropy regularization 
     if False:
         embeddings_path_WordEmbedding = 'embeddings_WordEmbedding.pkl'
 
@@ -146,7 +151,7 @@ if __name__ == '__main__':
             embeddings = embed.generate_embedding_WordEmbedding(documents,model)
             preprocessing.save_pickle(embeddings, embeddings_path_WordEmbedding)
 
-        if False:
+        if True:
             start_time = time.time()
             WE2evaluateIR.evaluate_with_Q(model, embeddings, combined_texts, beta = 1)
             end_time = time.time()  # Capture end time after function execution
