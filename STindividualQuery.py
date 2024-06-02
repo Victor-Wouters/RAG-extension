@@ -11,7 +11,7 @@ from heapq import nlargest
 
 def process_individual_query(query, model, embeddings, combined_texts):
 
-    threshold = 0.4 # Minimum similarity for a document to be considered relevant
+    threshold = 0.5 # Minimum similarity for a document to be considered relevant
 
     query_vector = model.encode([query])
     cosine_similarities = cosine_similarity(query_vector, embeddings)

@@ -21,16 +21,12 @@ def generate_embedding_WordEmbedding(documents, model):
     doc_embeddings = []
 
     for doc in documents:
-        # Retrieve embeddings for each word in the document if it exists in the model's vocabulary
         embeddings = [model.wv[word] for word in doc if word in model.wv]
         
-        if embeddings:  # Check if there are any embeddings
-            # keep all word vectors
+        if embeddings: 
             doc_embeddings.append(np.array(embeddings))
         else:
             doc_embeddings.append(np.zeros((1,model.vector_size)))
-            # Handle the case where none of the words were in the model's vocabulary
-            # For example, by appending a zero vector of the same length as the embeddings
     return doc_embeddings  
 
 

@@ -48,8 +48,8 @@ if __name__ == '__main__':
         if True:
             start_time = time.time()
             STevaluateIR.evaluate_with_Q(model, embeddings, combined_texts, beta = 1)
-            end_time = time.time()  # Capture end time after function execution
-            execution_time = end_time - start_time  # Calculate the execution time
+            end_time = time.time()  
+            execution_time = end_time - start_time  
 
             print(f"The function took {execution_time:.4f} seconds to complete.")
 
@@ -58,8 +58,8 @@ if __name__ == '__main__':
             #query = " You are a chef now with your own knowledge, how long does it take to boil an egg? "
             query = "What is the name of the first Dutch transformer-based pre-trained language model? Can you cite the source in-line in APA style?"
             STindividualQuery.process_individual_query(query, model, embeddings, combined_texts)
-            end_time = time.time()  # Capture end time after function execution
-            execution_time = end_time - start_time  # Calculate the execution time
+            end_time = time.time() 
+            execution_time = end_time - start_time  
 
             print(f"The function took {execution_time:.4f} seconds to complete.")
         ## Acceleration
@@ -73,8 +73,8 @@ if __name__ == '__main__':
             index.add(embedding_matrix)           
             start_time = time.time()
             ACCevaluateIR.evaluate_with_Q(model, embeddings, combined_texts, index, beta = 1)
-            end_time = time.time()  # Capture end time after function execution
-            execution_time = end_time - start_time  # Calculate the execution time
+            end_time = time.time()  
+            execution_time = end_time - start_time  
 
             print(f"The function took {execution_time:.4f} seconds to complete.")
 
@@ -112,8 +112,8 @@ if __name__ == '__main__':
         if True:
             start_time = time.time()
             WE1evaluateIR.evaluate_with_Q(model, embeddings, combined_texts, beta = 1)
-            end_time = time.time()  # Capture end time after function execution
-            execution_time = end_time - start_time  # Calculate the execution time
+            end_time = time.time()  
+            execution_time = end_time - start_time
 
             print(f"The function took {execution_time:.4f} seconds to complete.")
 
@@ -154,8 +154,8 @@ if __name__ == '__main__':
         if True:
             start_time = time.time()
             WE2evaluateIR.evaluate_with_Q(model, embeddings, combined_texts, beta = 1)
-            end_time = time.time()  # Capture end time after function execution
-            execution_time = end_time - start_time  # Calculate the execution time
+            end_time = time.time()  
+            execution_time = end_time - start_time  
 
             print(f"The function took {execution_time:.4f} seconds to complete.")
 

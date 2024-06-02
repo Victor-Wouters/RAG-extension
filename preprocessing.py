@@ -7,8 +7,8 @@ import numpy as np
 import ot
 
 # Download required NLTK resources
-#nltk.download('punkt')
-#nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('stopwords')
 
 # Function to combine all columns in an additional column "combined"
 def merge_columns(dataset):

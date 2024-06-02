@@ -3,7 +3,6 @@ import openai
 
 def summarize_chunk(document):
 
-  # Best prompt for the RAG task
   if True:
     prompt= "Please provide a concise summary of the following academic paper in a hard maximum of 1 sentence. "
  
